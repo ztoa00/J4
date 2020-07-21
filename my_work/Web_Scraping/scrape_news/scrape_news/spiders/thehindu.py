@@ -1,4 +1,4 @@
-import scrapy
+import scrapyy
 
 from ..items import ScrapeNewsItem
 
