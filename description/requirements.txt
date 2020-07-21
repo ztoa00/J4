@@ -1,0 +1,49 @@
+python
+scrapy project 
+
+overview: 
+>Have to build a URL crawler
+>We want to provide a feature where users can specify a certain website and have it crawled on demand.
+
+steps
+1.url as a input command - we can able to specify any_url(any_website)
+2.Visit a web page
+3.Scrape all unique URL’s found on the webpage and add them to a queue
+4.Recursively process URL’s one by one until we exhaust the queue
+5.on each url of the website it have to collect text data, pdf files, tables in that webpage 
+6.Print results ( required data from website - all pdf files, all text data to txt files , all tables to excel file ) 
+
+Note :
+The same code have to work for any website. 
+we have to create a code which it have to crawl any website. And it have to save a output file in (AWS s3 Bucket/local directory). 
+( Required output file from the website - all pdf files ,all text data in txt file, tables in excel file )
+
+
+In Code Input Command must be like :
+1.we can able to specific which website we want to crawl (website url) 
+2.we can able to specific what type of output needed ( text or pdf or excel or all ). so the o/p will be ( text or pdf or excel or all)
+3.we can able to specific the depth parameter to which they want it crawled 
+           Example : ("www.nseindia.com" save_content="all" depth_parameter=3)
+
+
+
+Project Details in Deepth :
+>We want to provide a feature where users can specify a certain website and have it crawled on demand.
+>On the UI - we will have a place where the user can specify the url and depth to which they want it crawled.
+>They can also specify whether they want continuous crawl as the site updates. They can also specify whether the source is still trusted.
+>This information is then stored in RDS against the user's cognito ID. The schema of the table is - uuid, cognito_id, url, continuous_crawl_flag (boolean), trusted (boolean), last_crawled (timestamp).
+>The scrapy crawler resides within the src/crawlers folder in github 
+>The scrapy crawler comes up looks at the last crawled timestamp for the URL in the table. It then requests all links which have been modified since the last_crawled timestamp.
+>It downloads those links into uuid and in uuid.json. the uuid.json metadata file contains the following: timestamp, main url, sub url that is crawled and timestamp.
+
+
+very important note :
+i already have a code it will crawl any website and give a text output and pdf files. but the text output sometimes will give unwanted text while crawling js pages.
+so we have to alter the code based on the requirement first we have to make a clear text output file. then we will do step by step process. daily i need one code we have to improve little bit daily and i have to give a pull request to my company github. 
+
+
+I'm doing a intern i have to complete one small task per day.i need u have to complete the given task and send me the code. Based on the project we have to improve a code daily and Based on my senior's previous day issues we have to do. Daily I have to give a pull request to my company github. So we will have a call at morning 9am about the requirements after finishing the code u have to send me anytime on that day before 11pm.
+
+
+
+

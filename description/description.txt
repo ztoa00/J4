@@ -1,0 +1,30 @@
+Looking for the person who is very good in python web scraping and web crawling tools.
+Must be good in Python, And Python web scraping libraries - scrapy, requests, bs4... and AWS Cloud Knowledge.
+
+I'm doing a intern i have to complete one small task per day. i need u have to complete the task and send me the code. So we will have a call daily about the requirements after finishing the code u have to send me
+
+i need support until August 31 on daily basis Monday to Friday. From my side max commitment will be monthly 4000 rupees, If u want we can make it as weekly payment also every Saturday 1000 rupees. weekly or monthly its based on ur wish.
+
+And pls go through the attachment file for full details
+
+
+
+
+
+REMAINING in REQUIREMENTS.TXT
+
+
+
+
+zip file pcaobus1:
+run command: scrapy crawl pcaobus >results.txt
+it will crawl http://pcaobus.org
+by changing div class we can use it for any another website
+
+zip file urlcrawl4:
+run command : scrapy crawl new -a "urls=http://www.oaktreecapital.com" -a save_content='text'
+by changing url u can run for any website 
+by changing save_content =
+1. "text" (it will give only text output)
+2. "pdf"(it will download all pdf files in the website)
+3."text_pdf" (it will collect all text and put it in text file and also download pdf files)
