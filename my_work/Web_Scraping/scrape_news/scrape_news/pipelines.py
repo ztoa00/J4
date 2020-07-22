@@ -5,15 +5,15 @@
 
 
 # useful for handling different item types with a single interface
-from itemadapter import ItemAdapter
-
-import xlsxwriter
+# from itemadapter import ItemAdapter
+# import xlsxwriter
 
 
 class ScrapeNewsPipeline:
 
     def open_spider(self, spider):
-        self.file = open('thehindu.txt', 'w')
+        self.filename = "domain" + ".txt"
+        self.file = open(self.filename, 'w')
 
     def close_spider(self, spider):
         self.file.close()
