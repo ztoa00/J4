@@ -1,11 +1,12 @@
 import scrapy
+from bs4 import BeautifulSoup
 
 from ..items import ScrapeNewsItem
 
 
 class NewsSpider(scrapy.Spider):
 
-    name = 'news'
+    name = 'news_spider_bs4'
     custom_settings = {
         'DEPTH_LIMIT': 1
     }
@@ -35,17 +36,21 @@ class NewsSpider(scrapy.Spider):
     def clean_text(self, text):
         cleaned_text = ''
         for line in text:
-            line = line.strip()
             if line:
-                cleaned_text = cleaned_text + " " + line
+                line = line.get_text()
+                line = line.strip()
+                if line:
+                    cleaned_text = cleaned_text + " " + line
         return cleaned_text.strip()
 
     def parse(self, response):
 
-        scraped_urls = response.css('a::attr(href)').extract()
+        soup = BeautifulSoup(response.text, 'html.parser')
+        scraped_urls = soup.find_all('a', href=True)
 
         scraped_urls_set = set()
         for url in scraped_urls:
+            url = url['href']
             if url[0] == '/':
                 url = self.start_urls[0] + url
                 scraped_urls_set.add(url)
@@ -53,10 +58,10 @@ class NewsSpider(scrapy.Spider):
                 scraped_urls_set.add(url)
 
         url = response.request.url
-        title = response.css('h1::text').extract()
-        content = response.css('p::text').extract()
+        title = soup.find_all('h1')
+        content = soup.find_all('p')
 
-        if title and content:
+        if len(title) and len(content):
             item = ScrapeNewsItem()
             item['URL'] = url
             item['Title'] = self.clean_text(title)
