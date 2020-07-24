@@ -44,11 +44,7 @@ class NewsSpider(scrapy.Spider):
                     cleaned_text = cleaned_text + " " + striped_text
         return cleaned_text.strip()
 
-    def parse(self, response):
-
-        soup = BeautifulSoup(response.text, 'html.parser')
-        scraped_urls = soup.find_all('a', href=True)
-
+    def clean_scraped_urls(self, scraped_urls):
         scraped_urls_set = set()
         for url in scraped_urls:
             url = url['href']
@@ -57,17 +53,26 @@ class NewsSpider(scrapy.Spider):
                 scraped_urls_set.add(url)
             elif url.startswith(self.start_urls[0]):
                 scraped_urls_set.add(url)
+        return scraped_urls_set
+
+    def parse(self, response):
+
+        soup = BeautifulSoup(response.text, 'html.parser')
+        scraped_urls = soup.find_all('a', href=True)
+        scraped_urls_set = self.clean_scraped_urls(scraped_urls)
 
         url = response.request.url
         title = soup.find_all('h1')
         content = soup.find_all('p')
 
-        if len(title) and len(content):
+        if title and content:
             item = ScrapeNewsItem()
             item['URL'] = url
             item['Title'] = self.clean_text(title)
             item['Content'] = self.clean_text(content)
             yield item
+        else:
+            self.logger.info("Topic and Content not found in : {}".format(url))
 
         self.logger.info("Scraping on {}/{} : {}".format(self.count, str(self.total_link_count), url))
         self.logger.info("Links Found in this site :" + str(len(scraped_urls_set)))
