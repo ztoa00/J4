@@ -6,38 +6,33 @@
 
 # useful for handling different item types with a single interface
 # from itemadapter import ItemAdapter
-# import xlsxwriter
+from datetime import datetime
 
+from .items import ScrapeNewsDataItem, ScrapeNewsNonDataItem
 
 class ScrapeNewsPipeline:
 
     def open_spider(self, spider):
-        self.filename = "domain" + ".txt"
-        self.file = open(self.filename, 'w')
+        now = datetime.now().strftime("%Y_%m_%d_%H%M%S")
+        self.filename1 = spider.allowed_domains[0] + str(now) + ".txt"
+        self.file1 = open(self.filename1, 'w')
+        self.filename2 = spider.allowed_domains[0] + "non_data_urls" + str(now) + ".txt"
+        self.file2 = open(self.filename2, 'w')
 
     def close_spider(self, spider):
-        self.file.close()
+        self.file1.close()
+        self.file2.close()
 
     def process_item(self, item, spider):
 
-        self.file.write("URL : " + str(item['URL']) + "\n")
-        self.file.write("Title : " + str(item['Title']) + "\n")
-        self.file.write("Content : " + str(item['Content']) + "\n")
-        self.file.write("\n")
+        if isinstance(item, ScrapeNewsDataItem):
+            self.file1.write("URL : " + str(item['URL']) + "\n")
+            self.file1.write("Title : " + str(item['Title']) + "\n")
+            self.file1.write("Content : " + str(item['Content']) + "\n")
+            self.file1.write("\n")
 
-        """
-        self.file.write(str(item)+"\n")
-        self.file.write("\n")
-        """
+        if isinstance(item, ScrapeNewsNonDataItem):
+            self.file2.write("URL : " + str(item['URL']) + "\n")
+            self.file2.write("\n")
 
         return item
-
-
-"""
-fname = "scraped_urls.xlsx"
-workbook = xlsxwriter.Workbook(fname)
-worksheet = workbook.add_worksheet()
-for row,url in enumerate(scraped_urls):
-    worksheet.write(row, 0, url)
-workbook.close()    
-"""

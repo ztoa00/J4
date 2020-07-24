@@ -1,7 +1,7 @@
 import scrapy
 import logging
 
-from ..items import ScrapeNewsItem
+from ..items import ScrapeNewsDataItem, ScrapeNewsNonDataItem
 
 
 class NewsSpider(scrapy.Spider):
@@ -61,13 +61,15 @@ class NewsSpider(scrapy.Spider):
         content = response.css('p::text').extract()
 
         if title and content:
-            item = ScrapeNewsItem()
+            item = ScrapeNewsDataItem()
             item['URL'] = url
             item['Title'] = self.clean_text(title)
             item['Content'] = self.clean_text(content)
             yield item
         else:
-            self.logger.info("Topic and Content not found in : {}".format(url))
+            item = ScrapeNewsNonDataItem()
+            item['URL'] = url
+            yield item
 
         self.logger.info("Scraping on {}/{} : {}".format(self.count, str(self.total_link_count), url))
         self.logger.info("Links Found in this site :" + str(len(scraped_urls_set)))
