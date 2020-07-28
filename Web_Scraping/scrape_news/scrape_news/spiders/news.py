@@ -7,12 +7,14 @@ from ..items import ScrapeNewsDataItem, ScrapeNewsNonDataItem
 class NewsSpider(scrapy.Spider):
 
     name = 'news'
+    allowed_domains = ['']
+    start_urls = ['']
     custom_settings = {
         'DEPTH_LIMIT': 1
     }
+
     total_link_count = 1
     count = 1
-
     logger = logging.getLogger()
 
     def __init__(self, *args, **kwargs):

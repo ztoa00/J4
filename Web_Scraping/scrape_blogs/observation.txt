@@ -1,0 +1,113 @@
+https://aswathdamodaran.blogspot.com/
+
+	home page
+		.date-outer
+			date --- h2
+			title ---- h3
+			content ------- post-body entry-content -- > div[style="text-align: justify"]
+
+
+https://www.relakhs.com/
+	if <article> > 1
+		header
+			h2 a ----> link and title
+			p text -->time
+
+
+
+
+
+
+https://www.jagoinvestor.com/page/{page_number}
+	if div .post-on-blog > 1
+		div -->.post-on-blog
+			h1 -> a		 --> href and title in a
+		....
+
+
+
+##########################################################################################################################
+
+
+
+#############################################################
+
+not able to scrape no response for request
+
+#############################################################
+
+https://www.investing.com/news/stock-market-news/{pg.no}
+pgno 9948 availble @ 27.07.2020@20.10
+
+if unavail page mean redirect to 1st page
+	
+	<article>
+			div .textDiv
+				a 	--> href and title in a
+
+				span .date				
+				or span text
+
+
+#############################################################
+
+working
+
+#############################################################
+
+
+https://moneyexcel.com/page/{pg_no}
+	#content_box
+	if <article> > 1
+		header
+			h2 -> a
+			or (.front-view-title a) 	--> href and title in a
+
+			.updated span ---> updated time
+
+
+https://www.marketcalls.in/page/{pg_no}
+	if <article> > 1
+		header
+			h2 -> a 	--> href and title in a
+            and h1 -> a
+
+			(<time>.text)
+			or p text -->time
+
+
+
+https://stableinvestor.com/page/{pg.no}
+	if <article> > 1
+		header
+			h2 -> a 	--> href and title in a
+
+			time .entry-date published
+			time .updated
+			or div text
+
+
+#############################################################
+
+##########################################################################################################################
+
+
+
+
+articles = response.css('article').css('header')
+if articles > 1:
+    scraped_url = []
+    for article in articles:
+        h1 = article.css('h1')
+        h2 = article.css('h2')
+        if h1:
+            url = h1.css('a::attr(href)').extract()
+            title = h1.css('h2').css('a::text').extract()
+        else:
+            url = h2.css('a::attr(href)').extract()
+            title = h2.css('h2').css('a::text').extract()
+        updated = article.css('.updated::text').extract()
+        upload_date = article.css('time').css('::text').extract()
+        collection.append([url,title,updated,upload_date])
+
+     pg_no += 1
